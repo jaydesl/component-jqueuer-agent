@@ -33,14 +33,8 @@ def init(service_name):
 job_app = init("")
 
 if __name__ == '__main__':
-	print(" ----------- I'm starting the Job Worker for the container ------------" )
 	node_id = sys.argv[1]
 	container = ast.literal_eval(sys.argv[2])
-	log_file =  "./log/" + container['hostname'] + ".log"
-	with open(log_file, "a") as myfile:
-		myfile.write("=====================================================\n")		
-		myfile.write(str(container) + "\n")
-		myfile.write("=====================================================\n")
 	worker_id = node_id + "##" + container['service_name'] + "##" + container['id_long']
 
 	job_app = init(container['service_name'])
@@ -53,6 +47,3 @@ if __name__ == '__main__':
 
 	}
 	job_worker.run(**job_options)
-	print("****************************************************")
-	print(str(worker_id))
-	print("****************************************************")
