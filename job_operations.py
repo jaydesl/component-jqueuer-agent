@@ -8,12 +8,15 @@ import celery
 from celery.exceptions import Reject
 from celery.result import AsyncResult
 
+# What to do when a job fails
 class JQueuer_Task(celery.Task):
 	def on_failure(self, exc, task_id, args, kwargs, einfo):
 		print('{0!r} failed: {1!r}'.format(task_id, exc))
 
 index = 0
 container_dead = False
+
+# Implementing the add function to start a job execution
 @job_app.task(bind=True,acks_late=True, track_started=True, base=JQueuer_Task) # 
 def add(self, exp_id, job_queue_id, job):
 	global index, container_dead
@@ -45,17 +48,25 @@ def add(self, exp_id, job_queue_id, job):
 
 	return output
 
+# Get Worker ID
 def getNodeID(worker_id):
 	return worker_id.split("##")[0]
 
+# Get Service Name
 def getServiceName(worker_id):
 	return worker_id.split("##")[1]
 
+# Get Container ID
 def getContainerID(worker_id):
 	return worker_id.split("##")[2]
 
+# Process a list of tasks
 def process_list(worker_id, exp_id, job_queue_id, job, job_start_time):
 	output = ""
+
+	# A pre-job script might be added here
+
+	# Go through the tasks, execute them sequntially
 	for task in job['tasks']:
 		try:
 			task_command = task['command'] 
@@ -73,8 +84,11 @@ def process_list(worker_id, exp_id, job_queue_id, job, job_start_time):
 		output = subprocess.check_output(command)
 		monitoring.terminate_task(getNodeID(worker_id), exp_id, getServiceName(worker_id), worker_id, job['id'], task["id"], task_start_time)
 
+	# A post-job script might be added here
+
 	return output
 
+# Process an array of tasks
 def process_array(worker_id, exp_id, job_queue_id, job, job_start_time):
 	output = ""
 	tasks = job['tasks']
@@ -87,6 +101,10 @@ def process_array(worker_id, exp_id, job_queue_id, job, job_start_time):
 	except Exception as e:
 		tasks['data'] = job['data']
 
+	# A pre-job script might be added here
+
+	# Go through the tasks, execute them sequntially
+
 	for x in range(0,tasks['count']):
 		task_start_time = time.time()
 		task_id = tasks["id"] + "_" + str(x)
@@ -94,6 +112,8 @@ def process_array(worker_id, exp_id, job_queue_id, job, job_start_time):
 		command = ['docker','exec', getContainerID(worker_id)] + tasks['command'] + [str(tasks["data"]) + [str(worker_id)]]
 		output = subprocess.check_output(command)
 		monitoring.terminate_task(getNodeID(worker_id), exp_id, getServiceName(worker_id), worker_id, job['id'], task_id , task_start_time)
+
+	# A post-job script might be added here
 
 	return output
 
