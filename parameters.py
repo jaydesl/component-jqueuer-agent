@@ -3,7 +3,7 @@ JOB_QUEUE_PREFIX 	= 	'jqueue_service_'
 broker_protocol		= 	'pyamqp'
 broker_username 	= 	'admin'
 broker_password 	= 	'mypass'
-broker_server		=	'rabbit'
+broker_server		=	'rabbit' # This value should be changed to the jqueuer_server Ip address 
 broker_port 		= 	5672
 
 def broker():
@@ -15,7 +15,7 @@ def broker():
 
 # Redis backend configuration
 backend_protocol 			= 	'redis'
-backend_server	 			=	'redis'
+backend_server	 			=	'redis' # This value should be changed to the jqueuer_server Ip address 
 backend_port     			=	6379
 backend_db		 			=	0
 backend_experiment_db_id	=	10
@@ -35,7 +35,7 @@ def backend(db):
 
 
 # Prometheus exporer configuration
-STATSD_SERVER 	= 'statsd'
+STATSD_SERVER 	= 'statsd' # This value should be changed to the micado_master Ip address 
 STATSD_PORT		= 9125
 STATSD_OPTIONS = {
     'api_key':'jqueuer_api_key',
