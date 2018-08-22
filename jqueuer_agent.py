@@ -100,7 +100,7 @@ def start(node_id):
 				del container_list[x]
 
 		except Exception as e:
-		time.sleep(0.5)
+		        time.sleep(0.5)
 
 if __name__ == '__main__':
 	if (len(sys.argv) > 1):
