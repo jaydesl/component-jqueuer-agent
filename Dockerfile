@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.6
 ADD requirements.txt /jqueuer_agent/requirements.txt
 ADD job_operations.py /jqueuer_agent/job_operations.py
 ADD container_worker.py /jqueuer_agent/container_worker.py
@@ -10,5 +10,5 @@ RUN mkdir log
 RUN mkdir data
 RUN pip install -r requirements.txt
 RUN pip install -U "celery[redis]"
-ENV NODE_ID=noname 
+ENV NODE_ID=noname
 ENTRYPOINT python3 jqueuer_agent.py $NODE_ID
