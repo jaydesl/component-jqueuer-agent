@@ -6,6 +6,9 @@ COPY monitoring.py /jqueuer_agent/monitoring.py
 COPY jqueuer_agent.py /jqueuer_agent/jqueuer_agent.py
 COPY parameters.py /jqueuer_agent/parameters.py
 WORKDIR /jqueuer_agent/
+RUN apt-get update && apt-get install -y \
+    libltdl7 \
+ && rm -rf /var/lib/apt/lists/*
 RUN mkdir log
 RUN mkdir data
 RUN pip install -r requirements.txt
