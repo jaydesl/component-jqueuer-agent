@@ -1,9 +1,9 @@
-from prometheus_client import Counter, Gauge, Histogram
+#from prometheus_client import Counter, Gauge, Histogram
 import time, sys
 from parameters import statsd
 
 # Number of workers
-JQUEUER_WORKER_COUNT = "jqueuer_worker_count" 
+JQUEUER_WORKER_COUNT = "jqueuer_worker_count"
 def add_worker(node_id, service_name):
 	statsd.increment(JQUEUER_WORKER_COUNT,
 		tags=[

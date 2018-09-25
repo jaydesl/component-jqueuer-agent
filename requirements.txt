@@ -1,6 +1,5 @@
-celery
-celery[redis]
-redis
-prometheus_client
-datadog
-docker
+docker==3.5.0
+celery==4.2.1
+redis==2.10.6
+datadog==0.22.0
+requests==2.19.1

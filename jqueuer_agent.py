@@ -61,7 +61,7 @@ def start(node_id):
 
 					container_obj = {
 						'id_long': container_long_id,
-						'name': container.attrs['Name'], 
+						'name': container.attrs['Name'],
 						'service_id': container.attrs['Config']['Labels']['com.docker.swarm.service.id'],
 						'service_name': container_service_name,
 						'task_id': container.attrs['Config']['Labels']['com.docker.swarm.task.id'],
@@ -70,14 +70,14 @@ def start(node_id):
 						'ip_address': '',
 						'created': container.attrs['Created'],
 						'started': container.attrs['State']['StartedAt'],
-						'experiment_id':experiment['experiment_id'], 
+						'experiment_id':experiment['experiment_id'],
 						'current_update': current_update ,
 					}
 
 					try:
 						container_obj['ip_address'] = container.attrs['NetworkSettings']['Networks']['bridge']['IPAddress']
 
-						# Start a new thread to control this container 
+						# Start a new thread to control this container
 						job_worker_thread = Thread(target = worker, args = (container_obj, node_id,))
 						job_worker_thread.start()
 						container_list[container_long_id] = container_obj
