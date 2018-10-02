@@ -15,26 +15,27 @@ def broker():
         broker  =       broker + '@' + broker_server + ':' + str(broker_port) + '//'
         return broker
 
-# Redis backend configuration
+# Redis Backend configuration
+import redis
+backend_password                        =       'b4sic'
 backend_protocol                        =       'redis'
 backend_server                          =       os.getenv('JQ_SERVER', "redis") # This value should be changed to the jqueuer_server Ip address
 backend_port                            =       6379
-backend_db                              =       0
-backend_experiment_db_id                =       10
+backend_db                                      =       0
+backend_experiment_db_id        =       10
 
 backend_experiment_db = redis.StrictRedis(
         host=backend_server,
         port=backend_port,
         db=backend_experiment_db_id,
-        password='b4sic',
+        password=backend_password,
         charset="utf-8",
         decode_responses=True
         )
 
 def backend(db):
-        backend = backend_protocol + '://' + backend_server + ':' + str(backend_port) + '/' + str(db)
+        backend = backend_protocol + '://:' + backend_password + '@' + backend_server + ':' + str(backend_port) + '/' + str(db)
         return backend
-
 
 
 # Prometheus exporer configuration
