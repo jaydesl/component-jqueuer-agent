@@ -98,7 +98,7 @@ def start(node_id):
 					trash.append(container_id_temp)
 			for x in trash:
 				del container_list[x]
-
+			time.sleep(2)
 		except Exception as e:
 		        time.sleep(0.5)
 
